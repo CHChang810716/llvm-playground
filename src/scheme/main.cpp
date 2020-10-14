@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   auto* ir_main_f = scheme::ir.main(*module);
   auto expr_block = llvm::BasicBlock::Create(scheme::ir.get_context(), "entry", ir_main_f);
   scheme::ir.get_builder().SetInsertPoint(expr_block);
+  scheme::ir.get_current_function() = ir_main_f;
   scheme::env.main_module_preload(*module, *ir_main_f, func_table);
 
   for(auto& sexpr : root->children) {

@@ -19,6 +19,10 @@ constexpr struct IR {
     );
     return irbuilder;
   }
+  llvm::Function*& get_current_function() const {
+    static thread_local llvm::Function* func = nullptr;
+    return func;
+  }
   llvm::Function* printf(llvm::Module& mod) const {
     llvm::FunctionType* printf_type = 
       llvm::TypeBuilder<int(char*, ...), false>::get(get_context());

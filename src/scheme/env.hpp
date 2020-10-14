@@ -62,11 +62,11 @@ constexpr struct Env {
             auto addr = ir.get_builder().CreateGEP(operand[0], operand[1]);
             return ir.get_builder().CreateLoad(addr);
         };
-        func_table["if"] = [&main_f](const Operands& operand) -> llvm::Value* {
+        func_table["if"] = [](const Operands& operand) -> llvm::Value* {
             auto* res = ir.get_builder().CreateAlloca(operand[1]->getType());
-            auto* cond_merge = llvm::BasicBlock::Create(ir.get_context(), "cond_merge", &main_f);
-            auto* cond_false = llvm::BasicBlock::Create(ir.get_context(), "cond_false", &main_f, cond_merge);
-            auto* cond_true = llvm::BasicBlock::Create(ir.get_context(), "cond_true", &main_f, cond_false);
+            auto* cond_merge = llvm::BasicBlock::Create(ir.get_context(), "cond_merge", ir.get_current_function());
+            auto* cond_false = llvm::BasicBlock::Create(ir.get_context(), "cond_false", ir.get_current_function(), cond_merge);
+            auto* cond_true = llvm::BasicBlock::Create(ir.get_context(), "cond_true", ir.get_current_function(), cond_false);
             ir.get_builder().CreateCondBr(operand[0], cond_true, cond_false);
             ir.get_builder().SetInsertPoint(cond_true);
             ir.get_builder().CreateStore(operand[1], res);
