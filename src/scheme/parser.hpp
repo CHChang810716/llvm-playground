@@ -59,7 +59,7 @@ struct SExpr : public Parentheses<
 
 struct File : public tao::pegtl::until<
   tao::pegtl::eof,
-  tao::pegtl::pad<SExpr, tao::pegtl::eol>
+  tao::pegtl::pad<tao::pegtl::must<SExpr>, tao::pegtl::eol>
 > {};
 template<class Rule>
 using ASTSelector = tao::pegtl::parse_tree::selector<
